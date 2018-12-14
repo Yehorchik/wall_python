@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Wall</title>
+    <style>
+         body{
+            background-image: linear-gradient(rgb(39,98,184),rgb(82,71,154),rgb(162,52,131));
+            background-repeat:no-repeat;
+            margin: 0px;
+            height: 100%;
+            width: 100%;
+        }
+        html {
+            margin: 0px;
+            height: 100%;
+            width: 100%;
+        }
+        .logout{
+            padding: 20px;
+        }
+        .logout h1{
+            display: inline-block;
+            color: cornflowerblue;
+        }
+        .logout input{
+            float: right;
+            margin-right: 200px;
+            margin-top: -45px;
+        }
+        .logout p{
+            display: inline-block;
+            margin-left: 600px;
+        }
+        .message{
+            padding-left: 50px;
+            width: 470px;
+        }
+        .ms{
+            height: 70px;
+            width: 570px;
+            border-radius: 10px;
+        }
+        .post{
+            padding-left: 100px;
+        }
+        
+        .w{
+            color: aliceblue;
+        }
+        .lol{
+            width: 360px;
+        }
+    </style>
+</head>
+<body>
+   <div class="logout">
+       <h1>Coding Dojo Wall</h1>
+       <p class="w">Welcome {{request.session.fname}} !!</p>
+       <form action="/leave" method="POST">
+        {% csrf_token %}
+       <input class="btn btn-danger" type="submit" name="logout" value="Leave the Wall">
+        </form>
+   </div>
+   <div class="message">
+       <form action="/post" method="POST">
+        {% csrf_token %}
+       <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Write your message here :)" name="message" class="ms">
+       <input type="submit" class="btn btn-success" name='send' value="Post">
+        </form>
+   </div>
+   {% for i in x %}
+   <div class="post">
+        <p class="w">{{i.user.first_name}} create this post at {{i.created_at.date}}</p>
+         <h2>{{i.message}}</h2>
+         {% if i.user.id == request.session.userid %}
+         <form action="/delete/{{i.id}}">
+         <input type="submit" class="btn btn-danger" value="Delete post">
+        </form>
+         {% endif %}
+         {% for j in i.comments.all %}
+         <p class="w">{{j.user.first_name}} create this comment at  {{j.created_at.date}}</p>
+                <h4>{{j.comment}} </h4> 
+         {% endfor %}
+         <form class='lol' action="/post_comment/{{i.id}}" method="POST">
+          {% csrf_token %}
+         <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Put your comment here" type="text" name="comment">
+         <input  type="submit" name="button" class="btn btn-success" value="Post a comment">
+         </form>
+
+         
+   </div>
+   {% endfor %}
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Register and Login</title>
+    <style>
+        p{
+            color: yellowgreen;
+        }
+        body{
+            background-image: linear-gradient(rgb(39,98,184),rgb(82,71,154),rgb(162,52,131));
+            background-repeat:no-repeat;
+            margin: 0px;
+            min-height: 100%;
+            width: 100%;
+        }
+        html {
+            margin: 0px;
+            height: 100%;
+            width: 100%;
+        }
+        .success{
+            margin-left: 410px;
+            margin-top: 230px;
+        }
+        form{
+            display: inline-block;
+        }
+        h1{
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+    <div class='success'>
+        <h1>Welcome dear user : {{request.session.fname}}</h1>
+        {% for message in messages %}
+            <p>{{message}}</p>
+        {% endfor %}
+        <form action="/logout" method="POST">
+        {% csrf_token %}
+            <input class="btn btn-danger" type="submit" value="Log Out" name="log_out">
+        </form>
+        <form action="/login_wall" method="POST">
+        {% csrf_token %}
+            <input type="submit"  class="btn btn-success" value='Wall' name="wall">
+        </form>
+    </div>
+</body>
+</html>
